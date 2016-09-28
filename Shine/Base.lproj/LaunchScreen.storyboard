@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BlankScreen" translatesAutoresizingMaskIntoConstraints="NO" id="c3P-28-8it">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img@2x" translatesAutoresizingMaskIntoConstraints="NO" id="JSr-dQ-tSE">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FDG-dN-NBy">
+                                <rect key="frame" x="180" y="262" width="241" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="241" id="WxZ-V7-CNe"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="52"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="c3P-28-8it" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="CKQ-37-JEX"/>
+                            <constraint firstItem="JSr-dQ-tSE" firstAttribute="leading" secondItem="c3P-28-8it" secondAttribute="leading" id="UR4-4c-6Y7"/>
+                            <constraint firstItem="JSr-dQ-tSE" firstAttribute="top" secondItem="c3P-28-8it" secondAttribute="top" id="VC1-AU-aWy"/>
+                            <constraint firstItem="JSr-dQ-tSE" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="Wrn-ou-99v"/>
+                            <constraint firstItem="JSr-dQ-tSE" firstAttribute="trailing" secondItem="c3P-28-8it" secondAttribute="trailing" id="dol-sT-K2z"/>
+                            <constraint firstAttribute="trailing" secondItem="c3P-28-8it" secondAttribute="trailing" id="e7c-Zu-4Rl"/>
+                            <constraint firstItem="FDG-dN-NBy" firstAttribute="centerX" secondItem="c3P-28-8it" secondAttribute="centerX" id="jr0-2G-qrD"/>
+                            <constraint firstItem="c3P-28-8it" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="lRb-wv-dgx"/>
+                            <constraint firstItem="FDG-dN-NBy" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="242" id="oVc-JG-86E"/>
+                            <constraint firstItem="c3P-28-8it" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="oqT-Yf-e4m"/>
+                            <constraint firstItem="FDG-dN-NBy" firstAttribute="centerY" secondItem="c3P-28-8it" secondAttribute="centerY" id="qlU-nW-1yW"/>
+                            <constraint firstItem="c3P-28-8it" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="zGT-UY-kxk"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="BlankScreen" width="750" height="1334"/>
+        <image name="img@2x" width="750" height="1334"/>
+    </resources>
+</document>
