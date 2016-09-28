@@ -5,5 +5,8 @@ Shine runs on a Firebase backend, allowing users to create a username and passwo
 
 This app was built with Xcode 7.3 and Swift 2.
 
-
-
+![launchscreen](https://cloud.githubusercontent.com/assets/9616943/18900238/99b3abfa-84f4-11e6-84bb-d096b515e267.png)
+![communityfeed](https://cloud.githubusercontent.com/assets/9616943/18900246/a6877a82-84f4-11e6-91da-5d89f8c7ee9d.png)
+![listdetail](https://cloud.githubusercontent.com/assets/9616943/18900250/a826ed46-84f4-11e6-87c0-6c9c47601d2b.png)
+![userlocation](https://cloud.githubusercontent.com/assets/9616943/18900255/b071d600-84f4-11e6-9637-bc94bea04e5d.png)
+![mapdirections](https://cloud.githubusercontent.com/assets/9616943/18900259/b1f2c098-84f4-11e6-9f88-4c4d359a81e3.png)
