@@ -12,14 +12,14 @@ class AlertService {
     
     static let sharedInstance = AlertService()
     
-    private var _EMAIL_PASSWORD_REQUIRED_TITLE: String!
-    private var _EMAIL_PASSWORD_REQUIRED_MSG: String!
-    private var _EMAIL_ALREADY_IN_USE_TITLE: String!
-    private var _EMAIL_ALREADY_IN_USE_MSG: String!
-    private var _INVALID_PASSWORD_TITLE: String!
-    private var _INVALID_PASSWORD_MSG: String!
-    private var _USER_NOT_FOUND_TITLE: String!
-    private var _USER_NOT_FOUND_MSG: String!
+    fileprivate var _EMAIL_PASSWORD_REQUIRED_TITLE: String!
+    fileprivate var _EMAIL_PASSWORD_REQUIRED_MSG: String!
+    fileprivate var _EMAIL_ALREADY_IN_USE_TITLE: String!
+    fileprivate var _EMAIL_ALREADY_IN_USE_MSG: String!
+    fileprivate var _INVALID_PASSWORD_TITLE: String!
+    fileprivate var _INVALID_PASSWORD_MSG: String!
+    fileprivate var _USER_NOT_FOUND_TITLE: String!
+    fileprivate var _USER_NOT_FOUND_MSG: String!
     
     var EMAIL_PASSWORD_REQUIRED_TITLE: String {
         return "Email & Password Required"
@@ -53,12 +53,12 @@ class AlertService {
         return "Problem creating account. Try something else"
     }
     
-    func showErrorAlert(vc: UIViewController, title: String, msg: String) {
+    func showErrorAlert(_ vc: UIViewController, title: String, msg: String) {
         
-        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .Alert)
-        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(action)
         
-        vc.presentViewController(alertController, animated: true, completion: nil)
+        vc.present(alertController, animated: true, completion: nil)
     }
 }

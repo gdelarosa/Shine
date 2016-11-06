@@ -20,17 +20,17 @@ class DataService {
     
 //MARK: Closures
     typealias COMPLETION_HANDLER = () -> ()
-    typealias COMPLETION_HANDLER_IMAGE_UPLOAD = (imgUrl: String) -> ()
-    typealias COMPLETION_HANDLER_IMAGE_FETCH = (img: UIImage) -> ()
+    typealias COMPLETION_HANDLER_IMAGE_UPLOAD = (_ imgUrl: String) -> ()
+    typealias COMPLETION_HANDLER_IMAGE_FETCH = (_ img: UIImage) -> ()
     
 //MARK: Image Cache
-    private let imageCache = NSCache()
+    fileprivate let imageCache = NSCache()
     
 //MARK: Paths
-    private var _REF_DATABASE = URL_DATABASE
-    private var _REF_POSTS = URL_DATABASE.child("posts")
-    private var _REF_USERS = URL_DATABASE.child("users")
-    private var _REF_IMAGES = URL_STORAGE.child("images")
+    fileprivate var _REF_DATABASE = URL_DATABASE
+    fileprivate var _REF_POSTS = URL_DATABASE.child("posts")
+    fileprivate var _REF_USERS = URL_DATABASE.child("users")
+    fileprivate var _REF_IMAGES = URL_STORAGE.child("images")
     
     var REF_BASE: FIRDatabaseReference {
         return _REF_DATABASE
@@ -50,8 +50,8 @@ class DataService {
 
 //MARK: User References
     
-    private var _REF_USER: FIRDatabaseReference {
-        guard let uid = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String else {
+    fileprivate var _REF_USER: FIRDatabaseReference {
+        guard let uid = UserDefaults.standard.object(forKey: KEY_UID) as? String else {
             return FIRDatabaseReference()
         }
         
@@ -77,7 +77,7 @@ class DataService {
 
 //MARK: Methods
     
-    func updateFirebaseUser(uid: String, user: Dictionary<String, AnyObject>) {
+    func updateFirebaseUser(_ uid: String, user: Dictionary<String, AnyObject>) {
         
         _REF_USERS.child(uid).updateChildValues(user) { (error, reference) in
             if error != nil {
@@ -89,34 +89,34 @@ class DataService {
         }
     }
     
-    func getUserData(uid: String, completion: (user: User) -> ()) {
+    func getUserData(_ uid: String, completion: @escaping (_ user: User) -> ()) {
         
-        _REF_USERS.child(uid).observeSingleEventOfType(.Value, withBlock: { snapshot in
+        _REF_USERS.child(uid).observeSingleEvent(of: .value, with: { snapshot in
             
             if let userInfo = snapshot.value as? [String: AnyObject] {
-                dispatch_async(dispatch_get_main_queue(), { 
-                    completion(user: User(dictionary: userInfo))
+                DispatchQueue.main.async(execute: { 
+                    completion(User(dictionary: userInfo))
                 })
             }
         })
     }
     
-    func createNewPost(postDescription: String, imgUrl: String?) -> [String: AnyObject] {
+    func createNewPost(_ postDescription: String, imgUrl: String?) -> [String: AnyObject] {
         
         var post: [String: AnyObject] = [
-            "user": NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String,
-            "description": postDescription,
-            "likes": 0
+            "user": UserDefaults.standard.object(forKey: KEY_UID) as! String as AnyObject,
+            "description": postDescription as AnyObject,
+            "likes": 0 as AnyObject
         ]
         
         if imgUrl != nil {
-            post["imageUrl"] = imgUrl!
+            post["imageUrl"] = imgUrl! as AnyObject?
         }
         
         return post
     }
     
-    func uploadPostToDatabase(post: [String: AnyObject], completion: COMPLETION_HANDLER) {
+    func uploadPostToDatabase(_ post: [String: AnyObject], completion: COMPLETION_HANDLER) {
         
         // add /posts/post
         let newPost = DataService.shared.REF_POSTS.childByAutoId()
@@ -128,15 +128,15 @@ class DataService {
         completion()
     }
     
-    func uploadImageToStorage(img: UIImage, completion: COMPLETION_HANDLER_IMAGE_UPLOAD) {
+    func uploadImageToStorage(_ img: UIImage, completion: @escaping COMPLETION_HANDLER_IMAGE_UPLOAD) {
         
         let imgData = UIImageJPEGRepresentation(img, 0.2)! // convert image to data and compress (0.0 - 1.0)
-        let imgPath = "\(NSDate.timeIntervalSinceReferenceDate())" // use current time to give unique name to image
+        let imgPath = "\(Date.timeIntervalSinceReferenceDate)" // use current time to give unique name to image
         let metadata = FIRStorageMetadata()
         metadata.contentType = "image/jpg"
         
         // upload image to Firebase
-        DataService.shared.REF_IMAGES.child(imgPath).putData(imgData, metadata: metadata, completion: { metadata, error in
+        DataService.shared.REF_IMAGES.child(imgPath).put(imgData, metadata: metadata, completion: { metadata, error in
             
             if error != nil {
                 print("Error uploading image")
@@ -149,11 +149,11 @@ class DataService {
             
             print("Image uploaded successfully! Link: \(imgLink)")
             
-            completion(imgUrl: imgLink)
+            completion(imgLink)
         })
     }
     
-    func updateProfileImageUrlInDatabase(imgUrl: String, completion: COMPLETION_HANDLER) {
+    func updateProfileImageUrlInDatabase(_ imgUrl: String, completion: @escaping COMPLETION_HANDLER) {
         
         REF_USER_PROFILE_IMAGE.setValue(imgUrl) { (error, reference) in
             
@@ -162,18 +162,18 @@ class DataService {
                 return
             }
             
-            dispatch_async(dispatch_get_main_queue(), {
-                NSNotificationCenter.defaultCenter().postNotificationName(NOTIFICATION_UPDATED_PROFILE, object: nil)
+            DispatchQueue.main.async(execute: {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NOTIFICATION_UPDATED_PROFILE), object: nil)
                 completion()
             })
         }
     }
     
-    func fetchImage(imgUrl: String, completion: COMPLETION_HANDLER_IMAGE_FETCH) {
+    func fetchImage(_ imgUrl: String, completion: @escaping COMPLETION_HANDLER_IMAGE_FETCH) {
         
-        if let cachedImage = imageCache.objectForKey(imgUrl) as? UIImage {
+        if let cachedImage = imageCache.object(forKey: imgUrl) as? UIImage {
             // fetch from imageCache
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 completion(img: cachedImage)
             })
         }
@@ -192,7 +192,7 @@ class DataService {
                 
                 self.imageCache.setObject(img, forKey: imgUrl) // save to cache
                 
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     completion(img: img)
                 })
             })

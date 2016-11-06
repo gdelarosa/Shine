@@ -18,15 +18,15 @@ class UsernameVC: UIViewController {
     
 //    @IBAction func donePressed(sender: AnyObject) {
 
-    @IBAction func donePressed(sender: AnyObject) {
+    @IBAction func donePressed(_ sender: AnyObject) {
     
-        guard let username = usernameTextField.text where username != "" else {
+        guard let username = usernameTextField.text , username != "" else {
             AlertService.sharedInstance.showErrorAlert(self, title: "", msg: "") // TODO: add alert message
             return
         }
         
         DataService.shared.REF_USER_USERNAME.setValue(username)
-        performSegueWithIdentifier(SEGUE_FINISHED_USERNAME, sender: nil)
+        performSegue(withIdentifier: SEGUE_FINISHED_USERNAME, sender: nil)
     }
 
 }

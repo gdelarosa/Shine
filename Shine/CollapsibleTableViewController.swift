@@ -9,17 +9,17 @@
 import UIKit
 
 extension UIView {
-    func rotate(toValue: CGFloat, duration: CFTimeInterval = 0.2, completionDelegate: AnyObject? = nil) {
+    func rotate(_ toValue: CGFloat, duration: CFTimeInterval = 0.2, completionDelegate: AnyObject? = nil) {
         let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
         rotateAnimation.toValue = toValue
         rotateAnimation.duration = duration
-        rotateAnimation.removedOnCompletion = false
+        rotateAnimation.isRemovedOnCompletion = false
         rotateAnimation.fillMode = kCAFillModeForwards
         
         if let delegate: AnyObject = completionDelegate {
             rotateAnimation.delegate = delegate
         }
-        self.layer.addAnimation(rotateAnimation, forKey: nil)
+        self.layer.add(rotateAnimation, forKey: nil)
     }
 }
 
@@ -62,42 +62,42 @@ class CollapsibleTableViewController: UITableViewController {
         ]
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (sections[section].collapsed!) ? 0 : sections[section].details.count
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableCellWithIdentifier("header") as! CollapsibleTableViewHeader
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableCell(withIdentifier: "header") as! CollapsibleTableViewHeader
         
         header.toggleButton.tag = section
         header.titleLabel.text = sections[section].name
         header.toggleButton.rotate(sections[section].collapsed! ? 0.0 : CGFloat(M_PI_2))
-        header.toggleButton.addTarget(self, action: #selector(CollapsibleTableViewController.toggleCollapse), forControlEvents: .TouchUpInside)
+        header.toggleButton.addTarget(self, action: #selector(CollapsibleTableViewController.toggleCollapse), for: .touchUpInside)
         
         return header.contentView
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell!
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
         
-        cell.textLabel?.text = sections[indexPath.section].details[indexPath.row]
+        cell?.textLabel?.text = sections[(indexPath as NSIndexPath).section].details[(indexPath as NSIndexPath).row]
         
-        return cell
+        return cell!
     }
     
-    func toggleCollapse(sender: UIButton) {
+    func toggleCollapse(_ sender: UIButton) {
         let section = sender.tag
         let collapsed = sections[section].collapsed
         
         // Toggle collapse
-        sections[section].collapsed = !collapsed
+        sections[section].collapsed = !collapsed!
         
         // Reload section
-        tableView.reloadSections(NSIndexSet(index: section), withRowAnimation: .Automatic)
+        tableView.reloadSections(IndexSet(integer: section), with: .automatic)
     }
     
 }

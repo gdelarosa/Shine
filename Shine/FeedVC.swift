@@ -38,10 +38,10 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     func setupObservers() {
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(refreshTableView), name: NOTIFICATION_UPDATED_PROFILE, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshTableView), name: NSNotification.Name(rawValue: NOTIFICATION_UPDATED_PROFILE), object: nil)
         
         // listen to new events
-        dataService.REF_POSTS.observeEventType(.Value, withBlock: { snapshot in
+        dataService.REF_POSTS.observe(.value, with: { snapshot in
             //            print(snapshot.value)
             
             self.posts = []
@@ -52,7 +52,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                     if let postDict = snap.value as? Dictionary<String, AnyObject> { // [String: AnyObject]
                         let key = snap.key
                         let post = Post(postKey: key, dictionary: postDict)
-                        self.posts.insert(post, atIndex: 0)
+                        self.posts.insert(post, at: 0)
                     }
                 }
             }
@@ -61,42 +61,42 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         })
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("PostCell") as? PostCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as? PostCell else {
             return PostCell()
         }
         
         //        cell.request?.cancel()
         
-        let post = posts[indexPath.row]
+        let post = posts[(indexPath as NSIndexPath).row]
         cell.feedVC = self
         cell.configureCell(post)
-        cell.editButton.addTarget(self, action: #selector(editButtonPressed), forControlEvents: .TouchUpInside)
+        cell.editButton.addTarget(self, action: #selector(editButtonPressed), for: .touchUpInside)
         
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        imagePicker.dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        imagePicker.dismiss(animated: true, completion: nil)
         selectedImage.image = image
     }
     
-    @IBAction func cameraPressed(sender: UITapGestureRecognizer) {
-        presentViewController(imagePicker, animated: true, completion: nil)
+    @IBAction func cameraPressed(_ sender: UITapGestureRecognizer) {
+        present(imagePicker, animated: true, completion: nil)
     }
     
 //    @IBAction func postPressed(sender: AnyObject) {
-      @IBAction func postPressed(sender: AnyObject) {
-        guard let postDescription = postTextField.text where postDescription != "" else {
+      @IBAction func postPressed(_ sender: AnyObject) {
+        guard let postDescription = postTextField.text , postDescription != "" else {
             print("TEXTFIELD IS EMPTY")
             return
         }
@@ -104,7 +104,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         let cameraImage = UIImage(named:"camera")
         
         // add post without image
-        guard let img = selectedImage.image where img != cameraImage else {
+        guard let img = selectedImage.image , img != cameraImage else {
             let postWithoutImage = dataService.createNewPost(postDescription, imgUrl: nil)
             dataService.uploadPostToDatabase(postWithoutImage, completion: {
                 self.refreshPostPanel()

@@ -24,23 +24,23 @@ class MapViewController: UIViewController {
         mapView.addAnnotations(foods)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkLocationAuthorizationStatus()
     }
     
     let regionRadius: CLLocationDistance = 10000
-    func centerMapOnLocation(location: CLLocation) {
+    func centerMapOnLocation(_ location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2.0, regionRadius * 2.0)
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
     func loadInitialDtata(){
-        let filename = NSBundle.mainBundle().pathForResource("Food", ofType: "json")
+        let filename = Bundle.main.path(forResource: "Food", ofType: "json")
         
-        var data: NSData?
+        var data: Data?
         do{
-            data = try NSData(contentsOfFile: filename!, options: NSDataReadingOptions(rawValue: 0))
+            data = try Data(contentsOf: URL(fileURLWithPath: filename!), options: NSData.ReadingOptions(rawValue: 0))
         }catch _ {
             data = nil
         }
@@ -49,7 +49,7 @@ class MapViewController: UIViewController {
         
         if let data = data {
             do {
-                jsonObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
+                jsonObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
             }catch _ {
                 jsonObject = nil
             }
@@ -57,7 +57,7 @@ class MapViewController: UIViewController {
         
         if let jsonObject = jsonObject as? [String: AnyObject], let jsonData = JSONValue.fromObject(jsonObject)?["data"]?.array{
             for foodJSON in jsonData {
-                if let foodJSON = foodJSON.array, food = Food.fromJSON(foodJSON){
+                if let foodJSON = foodJSON.array, let food = Food.fromJSON(foodJSON){
                     foods.append(food)
                 }
             }
@@ -66,7 +66,7 @@ class MapViewController: UIViewController {
     }
     
     func checkLocationAuthorizationStatus(){
-        if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             mapView.showsUserLocation = true
         }else {
             locationManager.requestWhenInUseAuthorization()

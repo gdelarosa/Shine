@@ -23,7 +23,7 @@ class TabBarVC: UITabBarController { // Will have to configure the user profile 
         
     }
     
-    @IBAction func profilePressed(sender: AnyObject) {
+    @IBAction func profilePressed(_ sender: AnyObject) {
         
 //        let currentUserId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
 //        

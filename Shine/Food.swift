@@ -36,7 +36,7 @@ class Food: NSObject, MKAnnotation {
         return mapItem
     }
     
-    class func fromJSON(json: [JSONValue]) -> Food? {
+    class func fromJSON(_ json: [JSONValue]) -> Food? {
         var title: String
         if let titleOrNil = json[16].string {
             title = titleOrNil
@@ -56,11 +56,11 @@ class Food: NSObject, MKAnnotation {
     func pinColor() -> UIColor? {
         switch discipline {
         case "Housing", "Shelter" :
-            return UIColor.blueColor()
+            return UIColor.blue
         case "Food", "Pantry" :
-            return UIColor.blueColor()
+            return UIColor.blue
         default :
-            return UIColor.blueColor()
+            return UIColor.blue
         }
     }
 }

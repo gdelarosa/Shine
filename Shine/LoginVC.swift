@@ -19,12 +19,12 @@ class LoginVC: UIViewController {
         super.viewDidLoad()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // segues work after viewsDidAppear... Testing with this code. 
-        if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
-            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+        if UserDefaults.standard.value(forKey: KEY_UID) != nil {
+            self.performSegue(withIdentifier: SEGUE_LOGGED_IN, sender: nil)
 
 //        if NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) != nil {
 //            goToNextVC()
@@ -36,10 +36,10 @@ class LoginVC: UIViewController {
 //    }
     
 //    @IBAction func emailLoginPressed(sender: UIButton) {
-    @IBAction func emailLoginPressed(sender: UIButton) {
+    @IBAction func emailLoginPressed(_ sender: UIButton) {
     
     
-        guard let email = emailTextField.text where email != "", let pass = passwordTextField.text where pass != "" else {
+        guard let email = emailTextField.text , email != "", let pass = passwordTextField.text , pass != "" else {
             
             let alert = AlertService.sharedInstance
             alert.showErrorAlert(self, title: alert.EMAIL_PASSWORD_REQUIRED_TITLE, msg: alert.EMAIL_PASSWORD_REQUIRED_MSG)
@@ -50,13 +50,13 @@ class LoginVC: UIViewController {
     }
     
     func goToNextVC() {
-        DataService.shared.REF_USER_USERNAME.observeSingleEventOfType(.Value, withBlock: { snapshot in
+        DataService.shared.REF_USER_USERNAME.observeSingleEvent(of: .value, with: { snapshot in
             
             if (snapshot.value as? NSNull) != nil {
-                self.performSegueWithIdentifier(SEGUE_CREATE_USERNAME, sender: nil)
+                self.performSegue(withIdentifier: SEGUE_CREATE_USERNAME, sender: nil)
             }
             else {
-                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                self.performSegue(withIdentifier: SEGUE_LOGGED_IN, sender: nil)
             }
         })
     }

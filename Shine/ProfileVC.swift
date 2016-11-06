@@ -24,8 +24,8 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        saveButton.enabled = false
-        saveButton.backgroundColor = UIColor.grayColor()
+        saveButton.isEnabled = false
+        saveButton.backgroundColor = UIColor.gray
         
         imagePicker.delegate = self
         
@@ -46,36 +46,36 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         }
     }
     
-    @IBAction func profileImagePressed(sender: UITapGestureRecognizer) {
-        presentViewController(imagePicker, animated: true, completion: nil)
+    @IBAction func profileImagePressed(_ sender: UITapGestureRecognizer) {
+        present(imagePicker, animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        dismiss(animated: true, completion: nil)
         
         profileImage.image = image
         didAddNewProfileImage = true
-        saveButton.enabled = true
+        saveButton.isEnabled = true
         saveButton.backgroundColor = THEME_BLUE
     }
     
-    @IBAction func savePressed(sender: UIButton) {
+    @IBAction func savePressed(_ sender: UIButton) {
         if didAddNewProfileImage == true, let img = profileImage.image {
             
             DataService.shared.uploadImageToStorage(img) { (imgUrl) in
                 DataService.shared.updateProfileImageUrlInDatabase(imgUrl, completion: {
-                    self.navigationController?.popViewControllerAnimated(true)
+                    self.navigationController?.popViewController(animated: true)
                 })
             }
         }
     }
     
-    @IBAction func logoutPressed(sender: UIButton) {
+    @IBAction func logoutPressed(_ sender: UIButton) {
         do {
             try FIRAuth.auth()?.signOut()
             
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(KEY_UID)
-            dismissViewControllerAnimated(true, completion: nil)
+            UserDefaults.standard.removeObject(forKey: KEY_UID)
+            dismiss(animated: true, completion: nil)
         }
         catch let error as NSError {
             print(error.debugDescription)

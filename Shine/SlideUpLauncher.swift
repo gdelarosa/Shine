@@ -11,12 +11,12 @@ import UIKit
 
 class SlideUpLauncher: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    private var _blackView = UIView()
+    fileprivate var _blackView = UIView()
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = UIColor.whiteColor()
+        cv.backgroundColor = UIColor.white
         return cv
     }()
     
@@ -28,26 +28,26 @@ class SlideUpLauncher: NSObject, UICollectionViewDataSource, UICollectionViewDel
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         
-        collectionView.registerClass(SlideUpCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(SlideUpCell.self, forCellWithReuseIdentifier: cellId)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(collectionView.frame.width, 50)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 50)
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         
         return cell
     }
     
     func showMenu() {
-        if let window = UIApplication.sharedApplication().keyWindow {
+        if let window = UIApplication.shared.keyWindow {
             
             _blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             _blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissMenu)))
@@ -57,23 +57,23 @@ class SlideUpLauncher: NSObject, UICollectionViewDataSource, UICollectionViewDel
             
             let height: CGFloat = 200
             let y = window.frame.height - height
-            collectionView.frame = CGRectMake(0, window.frame.height, window.frame.width, 200)
+            collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: 200)
             _blackView.frame = window.frame
             
-            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self._blackView.alpha = 1
-                self.collectionView.frame = CGRectMake(0, y, self.collectionView.frame.width, self.collectionView.frame.height)
+                self.collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
             }, completion: nil)
         }
     }
     
     func dismissMenu() {
-        UIView.animateWithDuration(0.5) {
+        UIView.animate(withDuration: 0.5, animations: {
             self._blackView.alpha = 0
             
-            if let window = UIApplication.sharedApplication().keyWindow {
-                self.collectionView.frame = CGRectMake(0, window.frame.height, self.collectionView.frame.width, self.collectionView.frame.height)
+            if let window = UIApplication.shared.keyWindow {
+                self.collectionView.frame = CGRect(x: 0, y: window.frame.height, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
             }
-        }
+        }) 
     }
 }

@@ -21,9 +21,9 @@ class PostCell: UITableViewCell {
     @IBOutlet weak var likesLabel: UILabel!
     @IBOutlet weak var likeButton: UIButton!
     
-    private var _post: Post!
-    private var _user: User!
-    private var _likeRef: FIRDatabaseReference!
+    fileprivate var _post: Post!
+    fileprivate var _user: User!
+    fileprivate var _likeRef: FIRDatabaseReference!
     //private var _request: Request?
     var feedVC: FeedVC?
     
@@ -46,20 +46,20 @@ class PostCell: UITableViewCell {
 //        postImage.image = nil
     }
     
-    func configureCell(post: Post) {
+    func configureCell(_ post: Post) {
         _post = post
         
         descriptionText.text = post.postDescription
         
         if post.likes <= 0 {
-            likesLabel.hidden = true
+            likesLabel.isHidden = true
         }
         else if post.likes == 1 {
-            likesLabel.hidden = false
+            likesLabel.isHidden = false
             likesLabel.text = "\(post.likes) Like"
         }
         else {
-            likesLabel.hidden = false
+            likesLabel.isHidden = false
             likesLabel.text = "\(post.likes) Likes"
         }
         
@@ -86,11 +86,11 @@ class PostCell: UITableViewCell {
     
     func setPostImage() {
         guard let imgUrl = _post.imageUrl else {
-            postImage.hidden = true
+            postImage.isHidden = true
             return
         }
         
-        self.postImage.hidden = false
+        self.postImage.isHidden = false
         
         DataService.shared.fetchImage(imgUrl) { (img) in
             self.postImage.image = img
@@ -101,27 +101,27 @@ class PostCell: UITableViewCell {
         // check if the likeRef exists for current user
         _likeRef = DataService.shared.REF_USER_LIKES.child(_post.postKey)
         
-        _likeRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+        _likeRef.observeSingleEvent(of: .value, with: { snapshot in
             
             if (snapshot.value as? NSNull) != nil {
-                self.likeButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+                self.likeButton.setTitleColor(UIColor.lightGray, for: UIControlState())
             }
             else {
-                self.likeButton.setTitleColor(THEME_BLUE, forState: .Normal)
+                self.likeButton.setTitleColor(THEME_BLUE, for: UIControlState())
             }
         })
     }
     
-    @IBAction func likeButtonPressed(sender: UIButton) {
-        _likeRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+    @IBAction func likeButtonPressed(_ sender: UIButton) {
+        _likeRef.observeSingleEvent(of: .value, with: { snapshot in
             
             if (snapshot.value as? NSNull) != nil {
-                self.likeButton.setTitleColor(THEME_BLUE, forState: .Normal)
+                self.likeButton.setTitleColor(THEME_BLUE, for: UIControlState())
                 self._post.adjustLikes(true)
                 self._likeRef.setValue(true)
             }
             else {
-                self.likeButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+                self.likeButton.setTitleColor(UIColor.lightGray, for: UIControlState())
                 self._post.adjustLikes(false)
                 self._likeRef.removeValue()
             }

@@ -11,9 +11,9 @@ import UIKit
 
 class User {
     
-    private var _email: String?
-    private var _username: String?
-    private var _profileImageUrl: String?
+    fileprivate var _email: String?
+    fileprivate var _username: String?
+    fileprivate var _profileImageUrl: String?
     
     var email: String? {
         return _email

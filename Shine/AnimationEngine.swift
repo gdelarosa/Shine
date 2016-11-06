@@ -18,30 +18,30 @@ class AnimationEngine: NSObject {
     let navBarCoverView = UIView()
     let tabBarCoverView = UIView()
     
-    func animateImageView(vc: FeedVC, statusImageView: UIImageView) {
+    func animateImageView(_ vc: FeedVC, statusImageView: UIImageView) {
         
         statusIV = statusImageView
         
-        if let startingFrame = statusImageView.superview?.convertRect(statusImageView.frame, toView: nil) {
+        if let startingFrame = statusImageView.superview?.convert(statusImageView.frame, to: nil) {
             
             statusImageView.alpha = 0
             
             blackBackgroundView.frame = vc.view.frame
-            blackBackgroundView.backgroundColor = UIColor.blackColor()
+            blackBackgroundView.backgroundColor = UIColor.black
             blackBackgroundView.alpha = 0
             blackBackgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(zoomOut)))
             vc.view.addSubview(blackBackgroundView)
             
-            if let keyWindow = UIApplication.sharedApplication().keyWindow {
+            if let keyWindow = UIApplication.shared.keyWindow {
                 
-                navBarCoverView.frame = CGRectMake(0, 0, 1000, 64)
-                navBarCoverView.backgroundColor = UIColor.blackColor()
+                navBarCoverView.frame = CGRect(x: 0, y: 0, width: 1000, height: 64)
+                navBarCoverView.backgroundColor = UIColor.black
                 navBarCoverView.alpha = 0
                 navBarCoverView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(zoomOut)))
                 keyWindow.addSubview(navBarCoverView)
                 
-                tabBarCoverView.frame = CGRectMake(0, keyWindow.frame.height - 49, 1000, 49)
-                tabBarCoverView.backgroundColor = UIColor.blackColor()
+                tabBarCoverView.frame = CGRect(x: 0, y: keyWindow.frame.height - 49, width: 1000, height: 49)
+                tabBarCoverView.backgroundColor = UIColor.black
                 tabBarCoverView.alpha = 0
                 tabBarCoverView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(zoomOut)))
                 keyWindow.addSubview(tabBarCoverView)
@@ -49,13 +49,13 @@ class AnimationEngine: NSObject {
             
             zoomedImageView.frame = startingFrame
             zoomedImageView.image = statusImageView.image
-            zoomedImageView.contentMode = .ScaleAspectFill
+            zoomedImageView.contentMode = .scaleAspectFill
             zoomedImageView.clipsToBounds = false
-            zoomedImageView.userInteractionEnabled = true
+            zoomedImageView.isUserInteractionEnabled = true
             zoomedImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(zoomOut)))
             vc.view.addSubview(zoomedImageView)
             
-            UIView.animateWithDuration(0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .CurveEaseOut, animations: {
+            UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
                 self.navBarCoverView.alpha = 1
                 self.blackBackgroundView.alpha = 1
                 self.tabBarCoverView.alpha = 1
@@ -67,9 +67,9 @@ class AnimationEngine: NSObject {
     
     func zoomOut() {
         
-        if let imageView = statusIV, startingFrame = imageView.superview?.convertRect(imageView.frame, toView: nil) {
+        if let imageView = statusIV, let startingFrame = imageView.superview?.convert(imageView.frame, to: nil) {
             
-            UIView.animateWithDuration(0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .CurveEaseOut, animations: {
+            UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
                 
                 self.navBarCoverView.alpha = 0
                 self.blackBackgroundView.alpha = 0

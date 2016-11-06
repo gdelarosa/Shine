@@ -20,13 +20,13 @@ class AuthService {
     
     let alert = AlertService.sharedInstance
     
-    func emailLogin(vc: LoginVC, email: String, pass: String) {
+    func emailLogin(_ vc: LoginVC, email: String, pass: String) {
         
-        FIRAuth.auth()?.signInWithEmail(email, password: pass, completion: { (user, error) in
+        FIRAuth.auth()?.signIn(withEmail: email, password: pass, completion: { (user, error) in
             
             if error == nil {
                 // user already exists -> logged in successfully -> proceed to FeedVC
-                NSUserDefaults.standardUserDefaults().setObject(user?.uid, forKey: KEY_UID)
+                UserDefaults.standard.set(user?.uid, forKey: KEY_UID)
                 vc.goToNextVC()
             }
             else {
@@ -36,17 +36,17 @@ class AuthService {
                 }
                 
                 if status == self.STATUS_INVALID_PASSWORD {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.alert.showErrorAlert(vc, title: self.alert.INVALID_PASSWORD_TITLE, msg: self.alert.INVALID_PASSWORD_MSG)
                     })
                     return
                 }
                 
                 if status == self.STATUS_USER_NOT_FOUND {
-                    FIRAuth.auth()?.createUserWithEmail(email, password: pass, completion: { (user, error) in
+                    FIRAuth.auth()?.createUser(withEmail: email, password: pass, completion: { (user, error) in
                         
                         if error != nil {
-                            dispatch_async(dispatch_get_main_queue(), { 
+                            DispatchQueue.main.async(execute: { 
                                 self.alert.showErrorAlert(vc, title: self.alert.USER_NOT_FOUND_TITLE, msg: self.alert.USER_NOT_FOUND_MSG)
                             })
                             return
@@ -56,9 +56,9 @@ class AuthService {
                             return
                         }
                         
-                        NSUserDefaults.standardUserDefaults().setObject(userId, forKey: KEY_UID)
+                        UserDefaults.standard.set(userId, forKey: KEY_UID)
                         
-                        FIRAuth.auth()?.signInWithEmail(email, password: pass, completion: { (user, error) in
+                        FIRAuth.auth()?.signIn(withEmail: email, password: pass, completion: { (user, error) in
                             let userData = [
                                 "provider": "email",
                                 "email": email

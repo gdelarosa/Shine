@@ -11,19 +11,19 @@ import MapKit
 
 extension MapViewController: MKMapViewDelegate {
    
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         if let annotation = annotation as? Food {
             let identifier = "Pin"
             var view: MKPinAnnotationView
-            if let dequeueView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? MKPinAnnotationView{
+            if let dequeueView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView{
                 dequeueView.annotation = annotation
                 view = dequeueView
             }else{
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 view.calloutOffset = CGPoint(x: -5, y: 5)
                 view.canShowCallout = true
-                view.rightCalloutAccessoryView = UIButton(type: UIButtonType.DetailDisclosure) as UIView
+                view.rightCalloutAccessoryView = UIButton(type: UIButtonType.detailDisclosure) as UIView
                 view.pinTintColor = annotation.pinColor()
             }
             return view
@@ -31,10 +31,10 @@ extension MapViewController: MKMapViewDelegate {
         return nil
     }
     
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
        
         let location = view.annotation as! Food
         let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
-        location.mapItem().openInMapsWithLaunchOptions(launchOptions)
+        location.mapItem().openInMaps(launchOptions: launchOptions)
     }
 }
