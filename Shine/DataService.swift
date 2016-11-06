@@ -177,26 +177,26 @@ class DataService {
                 completion(cachedImage)
             })
         }
-        else {
-            // download image
-            Alamofire.request(imgUrl).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error in
-                
-                if error != nil {
-                    print(error.debugDescription)
-                    return
-                }
-                
-                guard let dt = data, let img = UIImage(data: dt) else {
-                    return
-                }
-                
-                self.imageCache.setObject(img, forKey: imgUrl) // save to cache
-                
-                DispatchQueue.main.async(execute: {
-                    completion(img: img)
-                })
-            })
+//        else {
+//            // download image
+//            Alamofire.request(imgUrl).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error in
+//                
+//                if error != nil {
+//                    print(error.debugDescription)
+//                    return
+//                }
+//                
+//                guard let dt = data, let img = UIImage(data: dt) else {
+//                    return
+//                }
+//                
+//                self.imageCache.setObject(img, forKey: imgUrl) // save to cache
+//                
+//                DispatchQueue.main.async(execute: {
+//                    completion(img: img)
+//                })
+//            })
         }
     }
-}
+
 
