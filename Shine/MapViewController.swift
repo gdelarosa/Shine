@@ -55,7 +55,7 @@ class MapViewController: UIViewController {
             }
         }
         
-        if let jsonObject = jsonObject as? [String: AnyObject], let jsonData = JSONValue.fromObject(jsonObject)?["data"]?.array{
+        if let jsonObject = jsonObject as? [String: AnyObject], let jsonData = JSONValue.fromObject(jsonObject as AnyObject)?["data"]?.array{
             for foodJSON in jsonData {
                 if let foodJSON = foodJSON.array, let food = Food.fromJSON(foodJSON){
                     foods.append(food)

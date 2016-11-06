@@ -24,7 +24,7 @@ class DataService {
     typealias COMPLETION_HANDLER_IMAGE_FETCH = (_ img: UIImage) -> ()
     
 //MARK: Image Cache
-    fileprivate let imageCache = NSCache()
+    fileprivate let imageCache = NSCache<AnyObject, AnyObject>()
     
 //MARK: Paths
     fileprivate var _REF_DATABASE = URL_DATABASE
@@ -171,10 +171,10 @@ class DataService {
     
     func fetchImage(_ imgUrl: String, completion: @escaping COMPLETION_HANDLER_IMAGE_FETCH) {
         
-        if let cachedImage = imageCache.object(forKey: imgUrl) as? UIImage {
+        if let cachedImage = imageCache.object(forKey: imgUrl as AnyObject) as? UIImage {
             // fetch from imageCache
             DispatchQueue.main.async(execute: {
-                completion(img: cachedImage)
+                completion(cachedImage)
             })
         }
         else {

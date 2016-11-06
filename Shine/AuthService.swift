@@ -31,7 +31,7 @@ class AuthService {
             }
             else {
                 // login failed -> check error
-                guard let status = error?.code else {
+                guard let status = error?._code else {
                     return
                 }
                 
@@ -63,7 +63,7 @@ class AuthService {
                                 "provider": "email",
                                 "email": email
                             ]
-                            DataService.shared.updateFirebaseUser(userId, user: userData)
+                            DataService.shared.updateFirebaseUser(userId, user: userData as Dictionary<String, AnyObject>)
                         })
                         
                         vc.goToNextVC()
