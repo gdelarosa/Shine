@@ -16,9 +16,9 @@ extension UIView {
         rotateAnimation.isRemovedOnCompletion = false
         rotateAnimation.fillMode = kCAFillModeForwards
         
-        if let delegate: AnyObject completionDelegate {
-            rotateAnimation.delegate = delegate
-        }
+//        if  let delegate: AnyObject = completionDelegate {
+//            rotateAnimation.delegate = delegate as! [AnyObject]
+//        }
         self.layer.add(rotateAnimation, forKey: nil)
     }
 }

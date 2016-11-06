@@ -49,7 +49,7 @@ class MapViewController: UIViewController {
         
         if let data = data {
             do {
-                jsonObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
+                jsonObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as AnyObject
             }catch _ {
                 jsonObject = nil
             }

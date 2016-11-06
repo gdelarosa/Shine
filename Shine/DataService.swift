@@ -179,7 +179,7 @@ class DataService {
         }
         else {
             // download image
-            Alamofire.request(.GET, imgUrl).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error in
+            Alamofire.request(imgUrl).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error in
                 
                 if error != nil {
                     print(error.debugDescription)
