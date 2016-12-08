@@ -5,7 +5,7 @@ Shine runs on a Firebase backend, allowing users to create a username and passwo
 
 This app was built with Xcode 7.3 and Swift 2.
 
-*As of 11/6/16 Shine is being updated to Swift 3, Xcode 8. Profile, comment, and the share buttons are currently disabled. 
+*Shine is being updated to Swift 3, Xcode 8. Profile, comment, and the share buttons are currently disabled. 
 
 ![launchscreen](https://cloud.githubusercontent.com/assets/9616943/18900238/99b3abfa-84f4-11e6-84bb-d096b515e267.png)
 ![communityfeed](https://cloud.githubusercontent.com/assets/9616943/18900246/a6877a82-84f4-11e6-91da-5d89f8c7ee9d.png)
