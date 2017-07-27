@@ -5,5 +5,4 @@ Shine runs on a Firebase backend, allowing users to create a username and passwo
 
 This app was built with Xcode 7.3 and Swift 2.
 
-*Shine is being updated to Swift 3, Xcode 8. Profile, comment, and the share buttons are currently disabled. 
 
